@@ -50,12 +50,13 @@ pipeline {
               
                  bat "mvn compile"
             }
-    }
+          }
 			
         stage('Release') {
             steps {
            
                  echo bat "releasing the project"
-            }
+                  }
 			}
+}
 }
