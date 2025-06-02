@@ -55,7 +55,7 @@ pipeline {
         stage('Release') {
             steps {
            
-                 echo bat "releasing the project"
+                 echo "releasing the project"
                   }
 			}
 }
