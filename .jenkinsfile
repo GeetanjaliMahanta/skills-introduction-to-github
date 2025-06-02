@@ -36,12 +36,14 @@ pipeline {
                 
                 echo  "deploy the code"
             }
+			}
 			
         stage('Test') {
             steps {
                 
                  bat "mvn test"
             }
+			}
 			
         stage('Unit Testing') {
             steps {
@@ -55,4 +57,5 @@ pipeline {
            
                  echo bat "releasing the project"
             }
+			}
 }
