@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="java.sql.Statement"/>
+    <fullyQualifiedTypeName name="sun.util.resources.cldr.ext.CurrencyNames_so_DJ"/>
+    <fullyQualifiedTypeName name="org.json.simple.JSONObject"/>
+    <fullyQualifiedTypeName name="java.lang.SuppressWarnings"/>
+    <fullyQualifiedTypeName name="org.apache.commons.lang3.StringEscapeUtils"/>
+    <fullyQualifiedTypeName name="org.openqa.selenium.remote.DesiredCapabilities"/>
+    <fullyQualifiedTypeName name="org.testng.Assert"/>
+    <fullyQualifiedTypeName name="java.util.Calendar"/>
+</qualifiedTypeNameHistroy>

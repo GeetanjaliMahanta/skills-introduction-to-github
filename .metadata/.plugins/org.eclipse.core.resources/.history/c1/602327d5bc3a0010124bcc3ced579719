@@ -1,0 +1,100 @@
+package JsonJava;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.apache.commons.text.StringEscapeUtils;
+
+
+import com.fasterxml.jackson.core.exc.StreamWriteException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
+import com.google.gson.Gson;
+
+
+public class oneSingleJson {
+
+		public static void main(String[] args) 
+				throws ClassNotFoundException, SQLException, StreamWriteException, InvalidDefinitionException, IOException{
+			// TODO Auto-generated method stub
+			Class.forName("com.mysql.cj.jdbc.Driver"); // this class help us to talk to database we load this dynamically
+			Connection conn = null;
+			
+			ArrayList<CustomerDetails> listOfCustomer = new ArrayList<CustomerDetails>(); // to store all the Java objects what we have created
+			
+			CustomerDetails cusDet = new CustomerDetails();
+			 JSONArray jSarr = new JSONArray();
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Business", "root", "root");
+			
+
+	//object of statement class will help us to execute queries for ASIA region
+			Statement st = conn.createStatement();
+			ResultSet rs = st.executeQuery(
+					"SELECT * FROM CustomerInfo where Location = 'ASIA';");
+			
+			//System.out.println("While rows are reading : " + rs.toString());
+			while (rs.next()) { // set the point at first row , next row and so on
+				// System.out.println("While first row is reading : " + rs.next());
+				//CustomerDetails cusDet = new CustomerDetails();
+				cusDet.setCourseName(rs.getString(1));
+				cusDet.setPurchaseDate(rs.getString(2));
+				cusDet.setAmount(rs.getInt(3));
+				cusDet.setLocation(rs.getString(4));
+				listOfCustomer.add(cusDet); // added three different Java objects and added them into the Arraylist
+           //System.out.println("customer Details "+cusDet);
+			}
+			
+			System.out.println("List of customer Details Size "+listOfCustomer.size());
+				 for (int i=0; i< listOfCustomer.size(); i++) {
+					 
+					 System.out.println("List of customer Details Size "+ i +""+listOfCustomer.size());
+					    ObjectMapper oj = new ObjectMapper(); // to write the Java object into JSON file
+					    oj.writeValue(new File("D:\\Selenium_QA\\JsonJava\\src\\JsonJava\\customerInfo"+i+".json"), listOfCustomer.get(i));
+					    // create json String from java Object
+						 Gson gSon = new Gson();
+						 String jsonString = gSon.toJson(listOfCustomer.get(i));
+						 jSarr.add(jsonString); //Json object is added to JsonArray
+						 System.out.println(" Gson String list" +jSarr);
+				 
+				 }
+				 
+				 
+				
+				 JSONObject jo = new JSONObject();
+				 jo.put("data", jSarr); // JSON arraylist is added to the JSON object
+				
+				 System.out.println("JSON Object array list "+jo);
+				 @SuppressWarnings("deprecation")
+				 String catchUnescapeString = StringEscapeUtils.unescapeJava(jo.toJSONString());
+				 
+				
+				 
+				 String str1 = catchUnescapeString.replace("\"{", "{");
+				
+				 String finalStr = str1.replace("}\"", "}");
+				 
+				 System.out.println(finalStr);
+				 
+				 File file = new File("D:\\Selenium_QA\\JsonJava\\src\\JsonJava\\SingleJsonFile.json");
+
+			        try (FileWriter writer = new FileWriter(file)) {
+			            writer.write(finalStr);
+			            System.out.println("JSON file created successfully!");
+			        } catch (IOException e) {
+			            e.printStackTrace();
+			        }
+
+					   conn.close();
+				}
+
+}

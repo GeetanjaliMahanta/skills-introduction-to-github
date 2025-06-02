@@ -1,0 +1,52 @@
+package remoteTesting.dockerValidation;
+
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.Calendar;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+public class startDocker {
+
+	@Test
+	public void startFile() throws IOException, InterruptedException {
+
+		
+		 boolean flag = false;
+		 Runtime runObj = Runtime.getRuntime();
+		 
+		 runObj.exec("cmd /c start dockerUp.bat");
+		 
+  String file = "output.txt";
+  
+  
+  Calendar cal = Calendar.getInstance();//2:44 15th seconds
+  cal.add(Calendar.SECOND, 45); //2:44 45seconds
+  long stopnow = cal.getTimeInMillis();
+		
+  while(System.currentTimeMillis() < stopnow) {
+	  
+	  if(flag) {
+		  break;
+	  }
+	  BufferedReader reader = new BufferedReader(new FileReader(file));
+	  String currentLine = reader.readLine();// Reads the first line in the file
+  while(currentLine != null && !flag) {
+	  
+	  if(currentLine.contains("Node has been added")) {
+		  System.out.println("Found my text");
+		  flag=true; //14th seconds
+		  break; //no more looping
+	  }
+	  currentLine = reader.readLine();//This will read the second line from the file
+  }
+  reader.close();
+  }
+ 
+  Assert.assertTrue(flag);
+  Thread.sleep(3000); // 3 seconds waiting period
+	}
+
+}

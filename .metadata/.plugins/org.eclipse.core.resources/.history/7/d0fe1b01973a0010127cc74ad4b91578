@@ -1,0 +1,58 @@
+package JsonJava;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import java.io.File;
+import java.io.IOException;
+import com.google.gson.Gson;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.exc.StreamWriteException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
+
+
+public class jsonToJava {
+
+	public static void main(String[] args)
+			throws ClassNotFoundException, SQLException, StreamWriteException, InvalidDefinitionException, IOException, JsonGenerationException, JsonMappingException {
+		// TODO Auto-generated method stub
+		Class.forName("com.mysql.cj.jdbc.Driver"); // this class help us to talk to database we load this dynamically
+		Connection conn = null;
+		
+
+		CustomerDetails cusDet = new CustomerDetails();
+		conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Business", "root", "root");
+		
+
+//object of statement class will help us to execute queries for ASIA region
+		Statement st = conn.createStatement();
+		ResultSet rs = st.executeQuery(
+				"SELECT * FROM CustomerInfo where Location = 'ASIA' AND PurchaseDate = current_date() LIMIT 1;");
+		while (rs.next()) { // set the point at first row , next row and so on
+
+			
+			cusDet.setCourseName(rs.getString(1));
+			cusDet.setPurchaseDate(rs.getString(2));
+			cusDet.setAmount(rs.getInt(3));
+			cusDet.setLocation(rs.getString(4));
+			
+
+		}
+		
+			 ObjectMapper oj = new ObjectMapper(); // to write the Java object into JSON file
+			 oj.writeValue(new File("D:\\Selenium_QA\\JsonJava\\src\\JsonJava\\customerDetails.json"), cusDet);
+			
+		 
+		conn.close();
+	}
+
+}

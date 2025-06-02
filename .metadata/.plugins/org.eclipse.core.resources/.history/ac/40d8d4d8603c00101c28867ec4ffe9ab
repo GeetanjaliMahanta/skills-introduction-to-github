@@ -1,0 +1,35 @@
+package remoteTesting.dockerValidation;
+
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.IOException;
+
+import org.testng.annotations.Test;
+
+public class startDocker {
+
+	@Test
+	public void startFile() throws IOException, InterruptedException {
+
+		
+		 
+		 Runtime runObj = Runtime.getRuntime();
+		 
+		 runObj.exec("cmd /c start dockerUp.bat");
+		 
+  String file = "output.txt";
+  BufferedReader reader = new BufferedReader(new FileReader(file));
+  String currentLine = reader.readLine();
+		
+  
+  while(currentLine != null) {
+	  
+	  if(currentLine.contains("Registering the node to the hub")) {
+		  
+		  break;
+	  }
+	  currentLine = reader.readLine();
+  }
+	}
+
+}

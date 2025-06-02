@@ -1,0 +1,28 @@
+package remoteTesting.dockerValidation;
+
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+
+public class chromeStandaloneTest {
+	
+	
+	@SuppressWarnings("deprecation")
+	public static void main (String[] args) throws MalformedURLException {
+		
+		//Remote Web driver port: 4444
+		DesiredCapabilities cap = DesiredCapabilities.chrome(); // run the chrome browser or Firefox()
+		
+		URL ur = new URL("http://localhost:4444/wd/hub"); //which port our test cases need to run
+		
+		RemoteWebDriver driver = new RemoteWebDriver (ur, cap);
+		// to land on a web page
+		
+		driver.get("http://google.com");
+		System.out.println(driver.getTitle());
+		
+	}
+}

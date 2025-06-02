@@ -1,0 +1,18 @@
+/**
+ * 
+ */
+/**
+ * 
+ */
+module JsonJava {
+	
+	requires com.fasterxml.jackson.databind;
+	requires java.sql;	
+	requires com.fasterxml.jackson.core;
+	requires com.fasterxml.jackson.annotation;
+	requires json.simple;
+	requires com.google.code.gson;
+	requires com.google.gson.GSon;
+	requires gson;
+	
+}

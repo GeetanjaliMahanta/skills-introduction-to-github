@@ -1,0 +1,64 @@
+package remoteTesting.dockerValidation;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Calendar;
+
+import org.testng.Assert;
+
+public class stopDocker {
+
+	public void stopFile() throws IOException, InterruptedException {
+
+		boolean flag = false;
+		Runtime runObj = Runtime.getRuntime();
+
+		runObj.exec("cmd /c start dockerUp.bat");
+
+		String file = "output.txt";
+
+		Calendar cal = Calendar.getInstance();// 2:44 15th seconds
+		cal.add(Calendar.SECOND, 45); // 2:44 45seconds
+		long stopnow = cal.getTimeInMillis();
+
+		Thread.sleep(3000);
+
+		while (System.currentTimeMillis() < stopnow) {
+
+			if (flag) {
+				break;
+			}
+
+			BufferedReader reader = new BufferedReader(new FileReader(file));
+			String currentLine = reader.readLine();// Reads the first line in the file
+			while (currentLine != null && !flag) {
+
+				if (currentLine.contains("selenium-hub exited")) {// we need to wait for the Shutdown complete,after
+																	// that
+																	// we need to delete the output file
+					System.out.println("Found my text when docker stops");
+					flag = true; // 14th seconds
+					break; // no more looping
+				}
+
+				currentLine = reader.readLine();// This will read the second line from the file
+			}
+
+			reader.close();// Buffered Stream get closed once job is done
+		}
+
+		Assert.assertTrue(flag);
+
+		// To delete the output file create a File class object
+
+		File fle = new File("output.txt");
+		if (fle.delete()) {
+
+			System.out.println("File is deleted successfully");
+		}
+
+	}
+
+}

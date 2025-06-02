@@ -1,0 +1,73 @@
+package JsonJava;
+
+import java.io.File;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.exc.StreamWriteException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
+import com.google.gson.Gson;
+
+public class oneSingleJava {
+
+	public static void main(String[] args) 
+				throws ClassNotFoundException, SQLException, StreamWriteException, InvalidDefinitionException, IOException, JsonGenerationException, JsonMappingException {
+			// TODO Auto-generated method stub
+			Class.forName("com.mysql.cj.jdbc.Driver"); // this class help us to talk to database we load this dynamically
+			Connection conn = null;
+			
+			ArrayList<CustomerDetails> listOfCustomer = new ArrayList<CustomerDetails>();
+			JSONArray jsonArr = new JSONArray();// to store all the Java objects what we have created
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Business", "root", "root");
+			
+
+	//object of statement class will help us to execute queries for ASIA region
+			Statement st = conn.createStatement();
+			ResultSet rs = st.executeQuery(
+					"SELECT * FROM CustomerInfo where Location = 'ASIA' AND PurchaseDate = current_date();");
+			while (rs.next()) { // set the point at first row , next row and so on
+
+				CustomerDetails cusDet = new CustomerDetails();
+				cusDet.setCourseName(rs.getString(1));
+				cusDet.setPurchaseDate(rs.getString(2));
+				cusDet.setAmount(rs.getInt(3));
+				cusDet.setLocation(rs.getString(4));
+				
+				listOfCustomer.add(cusDet); // added three different Java objects and added them into the Arraylist
+
+			}
+			
+			 for (int i=0; i< listOfCustomer.size(); i++) {
+				 ObjectMapper oj = new ObjectMapper(); // to write the Java object into JSON file
+				 oj.writeValue(new File("D:\\Selenium_QA\\JsonJava\\src\\JsonJava\\customerJsonDetails"+i+".json"), listOfCustomer.get(i));
+				 
+				 Gson gsonObj = new Gson();
+				 String jsonString = gsonObj.toJson(listOfCustomer.get(i)); //convert java object to Json String with the help of Gson class
+				 jsonArr.add(jsonString);
+			 
+			 
+			 }
+			 
+			 //Create Json string from java object
+			 
+			 
+			 //Json Simple
+			 JSONObject jsonObj = new JSONObject();
+			 jsonObj.put("data", jsonArr);
+	         System.out.println(jsonArr)	;	 
+			 
+			conn.close();
+		}
+
+	}

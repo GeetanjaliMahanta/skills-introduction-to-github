@@ -1,0 +1,30 @@
+package JsonJava;
+
+import java.io.File;
+import java.io.IOException;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public class extractJsonForNewStudent {
+
+	public static void main(String[] args) throws JsonParseException, JsonMappingException, IOException {
+		// TODO Auto-generated method stub
+
+		// Reverse From JSON to Java Object : : We need to Read Value
+		/*
+		 * ObjectMapper oj = new ObjectMapper(); // to write the Java object into JSON
+		 * file oj.writeValue(new
+		 * File("D:\\Selenium_QA\\JsonJava\\src\\JsonJava\\customerDetails.json"),
+		 * cusDet);
+		 */
+		
+		
+		ObjectMapper obj = new ObjectMapper();
+		CustomerDetailsNewStrudent newStudent = obj.readValue(new File("D:\\Selenium_QA\\JsonJava\\src\\customerNewStudent.json"), CustomerDetailsNewStrudent.class );
+		
+		System.out.println(newStudent.getCourseName());
+	}
+
+}

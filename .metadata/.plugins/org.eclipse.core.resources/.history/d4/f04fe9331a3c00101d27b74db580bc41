@@ -1,0 +1,10 @@
+package remoteTesting.dockerValidation;
+
+public class firefoxStandaloneTest {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}
