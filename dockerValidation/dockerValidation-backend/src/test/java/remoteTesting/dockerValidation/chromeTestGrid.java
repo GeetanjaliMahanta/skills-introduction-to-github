@@ -1,0 +1,56 @@
+package remoteTesting.dockerValidation;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+public class chromeTestGrid {
+
+	// This is useful for setting up configurations or initializing resources before
+	// executing test
+	@BeforeTest
+	public void startDocker() throws IOException, InterruptedException {
+		// To delete the output file create a File class object
+
+		File fle = new File("output.txt");
+		if (fle.delete()) {
+
+			System.out.println("File is deleted successfully");
+		}
+		startDocker strt = new startDocker();
+		strt.startFile();
+
+	}
+
+	// for cleanup operations, such as closing connections or releasing resources
+	// after test execution.
+	@AfterTest
+	public void stopDocker() throws IOException, InterruptedException {
+
+		stopDocker stp = new stopDocker();
+		stp.stopFile();
+
+	}
+
+	@Test
+	public void test1() throws MalformedURLException {
+
+		ChromeOptions options = new ChromeOptions();
+
+		URL ur = new URL("http://localhost:4444/wd/hub"); // which port our test cases need to run
+
+		RemoteWebDriver driver = new RemoteWebDriver(ur, options);
+		// to land on a web page
+
+		driver.get("https://www.google.com");
+		System.out.println(driver.getTitle());
+
+	}
+}
