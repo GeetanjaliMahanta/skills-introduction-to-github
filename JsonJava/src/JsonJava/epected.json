@@ -1,0 +1,29 @@
+{
+"data": [
+ {
+  "CourseName": "webservices",
+  "PurchaseDate": "2025-05-22",
+  "Amount" : 120,
+  "Location": "ASIA"
+  },
+  {
+  "CourseName": "rating",
+  "PurchaseDate": "2025-05-22",
+  "Amount" : 120,
+  "Location": "ASIA"
+  },
+  {
+  "CourseName": "finance",
+  "PurchaseDate": "2025-05-22",
+  "Amount" : 120,
+  "Location": "ASIA"
+  },
+  {
+  "CourseName": "estiamtions",
+  "PurchaseDate": "2025-05-22",
+  "Amount" : 32,
+  "Location": "ASIA"
+  }
+  ]
+}
+  
